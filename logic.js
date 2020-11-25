@@ -33,6 +33,10 @@ this.attack = function(foe, targetedLimb, combatColor) {
     console.log("%c" + foe.name + "'s " + targetedLimb +" condition: " + foe.limbCondition[targetedLimb],"color:" + combatColor + ";")
     console.log("%c" + foe.name + " has " + foe.condition + " health left","color:" + combatColor + ";")
     console.log("----------------------------")
+    if (foe.condition <= 0) {
+      console.log(foe.name + " has fallen in battle!")
+      return
+    }
    // console.log(foe.name + "'s arm has " + foe.limbCondition.rightArm + " health left")
 };
 
@@ -45,10 +49,22 @@ var skeleton3 = new Entity("Enemy", "Skeleton3", 50, {head: 100, torso: 100, lef
 
 //player.printStats();
 //skeleton.printStats();
+playerChooseLimb = function(clickedbutton) {
 
-foeChooseTarget = function() {
+  for (i=0; i < 6; i ++) {
+    document.getElementsByClassName("limbButton")[i].style = "background-color: grey"
+    document.getElementsByClassName("limbButton")[i].id = "inactive"
+  }
+  console.log(clickedbutton) //not working, try something else, get rid of global var
+  clickedbutton.style = "background-color: red"
+  clickedbutton.id = "active"
+  console.log(document.getElementsByClassName("limbButton"))
+  console.log(clickedbutton)
+}
+
+foeChooseLimb = function() {
     var limbNum = Math.floor(Math.random() * 6 + 1)
-    console.log(limbNum)
+    
     switch(limbNum) {
         case 1:
           return "head"
@@ -67,13 +83,22 @@ foeChooseTarget = function() {
       }
 }
 
-combatRound = function(foe, targetedLimb) {
+combatRound = function(foe) {
+  if (document.getElementById("active") === null) {
+console.log("No limb selected")
+} else if (foe.condition > 0 && player.condition > 0) {
 
-    //console.log(foe)
+  var targetedLimb = document.getElementById("active").name
+
+  console.log(player.condition)
 
     player.attack(foe, targetedLimb, "green");
 
-    skeleton1.attack(player, foeChooseTarget(), "red");
+    skeleton1.attack(player, foeChooseLimb(), "red");
+
+  } else {
+    console.log("No enemy to attack")
+  }
 
 }
 

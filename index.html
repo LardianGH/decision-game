@@ -7,12 +7,13 @@
     <link rel="stylesheet" href="style.css"> <!-- connects the HTML to the CSS -->
 </head>
 <body style = background-color:black>
-    <button onclick="combatRound(skeleton1, 'head')">Head</button>
-    <button onclick="combatRound(skeleton1, 'torso')">Torso</button>
-    <button onclick="combatRound(skeleton1, 'rightArm')">Right Arm</button>
-    <button onclick="combatRound(skeleton1, 'leftArm')">Left Arm</button>
-    <button onclick="combatRound(skeleton1, 'rightLeg')">Right Leg</button>
-    <button onclick="combatRound(skeleton1, 'leftLeg')">Left Leg</button>
+    <button onclick="playerChooseLimb(this)" name="head" class="limbButton" id="inactive" style="background-color: grey">Head</button>
+    <button onclick="playerChooseLimb(this)" name="torso" class="limbButton" id="inactive" style="background-color: grey">Torso</button>
+    <button onclick="playerChooseLimb(this)" name="rightArm" class="limbButton" id="inactive" style="background-color: grey">Right Arm</button>
+    <button onclick="playerChooseLimb(this)" name="leftArm" class="limbButton" id="inactive" style="background-color: grey">Left Arm</button>
+    <button onclick="playerChooseLimb(this)" name="rightLeg" class="limbButton" id="inactive" style="background-color: grey">Right Leg</button>
+    <button onclick="playerChooseLimb(this)" name="leftLeg" class="limbButton" id="inactive" style="background-color: grey">Left Leg</button>
+    <button onclick="combatRound(skeleton1)">Execute</button>
 </body>
 </html>
 
