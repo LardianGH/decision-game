@@ -14,6 +14,8 @@ this.printStats = function() {
      "\nGuard: " + this.guard + 
      "\nBrawn: " + this.brawn +
      "\nWeapon " + this.weapon)
+     console.log(Object.keys(this.limbCondition)[3])
+     delete this.limbCondition[Object.keys(this.limbCondition)[3]]
     console.log(this.limbCondition)
     console.log(this.weapon)
 }
@@ -45,7 +47,7 @@ this.attack = function(foe, targetedLimb, combatColor) {
 var player = new Entity("Player", "Human", 100, {head: 100, torso: 100, leftArm: 100, rightArm: 100, leftLeg: 100, rightLeg: 100}, 15, 20, {name: "Shortsword", damage: 120, condition: 20});
 var skeleton1 = new Entity("Enemy", "Skeleton1", 300, {head: 100, torso: 100, leftArm: 100, rightArm: 100, leftLeg: 100, rightLeg: 100}, 5, 14, {name: "Broadsword", damage: 140, condition: 10});
 var skeleton2 = new Entity("Enemy", "Skeleton2", 50, {head: 80, torso: 100, leftArm: 100, rightArm: 70, leftLeg: 100, rightLeg: 100}, 5, 14, {name: "Lance", damage: 180, condition: 10});
-var skeleton3 = new Entity("Enemy", "Skeleton3", 50, {head: 100, torso: 100, leftArm: 100, rightArm: 100, leftLeg: 100, rightLeg: 100}, 5, 14, {name: "Dagger", damage: 100, condition: 10});
+var skeleton3 = new Entity("Enemy", "Skeleton3", 50, [{head: 100}, {torso: 100}, {leftArm: 100}, {rightArm: 100}, {leftLeg: 100}, {rightLeg: 100}], 5, 14, {name: "Dagger", damage: 100, condition: 10});
 
 //player.printStats();
 //skeleton.printStats();
@@ -90,14 +92,16 @@ console.log("No limb selected")
 
   var targetedLimb = document.getElementById("active").name
 
-  console.log(player.condition)
-
     player.attack(foe, targetedLimb, "green");
 
+    if (foe.condition > 0 && player.condition > 0) {
     skeleton1.attack(player, foeChooseLimb(), "red");
+    }
 
-  } else {
+  } else if (foe. condition <= 0 ){
     console.log("No enemy to attack")
+  } else {
+    console.log("Dead men can't fight")
   }
 
 }
@@ -107,3 +111,5 @@ console.log("No limb selected")
 skeleton1.printStats();
 //skeleton2.printStats();
 //skeleton3.printStats();
+
+//console.log(Object.keys(skeleton3.limbCondition[3])[0])
