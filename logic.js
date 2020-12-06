@@ -14,8 +14,8 @@ this.printStats = function() {
      "\nGuard: " + this.guard + 
      "\nBrawn: " + this.brawn +
      "\nWeapon " + this.weapon)
-     console.log(Object.keys(this.limbCondition)[3])
-     delete this.limbCondition[Object.keys(this.limbCondition)[3]]
+    //  console.log(Object.keys(this.limbCondition)[3])
+    //  delete this.limbCondition[Object.keys(this.limbCondition)[3]]
     console.log(this.limbCondition)
     console.log(this.weapon)
 }
@@ -23,7 +23,13 @@ this.printStats = function() {
 this.attack = function(foe, targetedLimb, combatColor) {
     //console.log("Attack target: " + "General")
     // var targetedLimb = "leftArm"
-    var attack = Math.floor((this.brawn * (this.weapon.damage / 100)) * (this.limbCondition.rightArm / 100)) //May equip swords in both left or right hand
+    console.log(foe.limbCondition[targetedLimb])
+    if (foe.limbCondition[targetedLimb] === undefined) {
+      console.log("You already destroyed that limb")
+      return "STOP"
+    }
+    var attackingLimbStrength = this.limbCondition.rightArm != null ? (this.limbCondition.rightArm / 100) : 0
+    var attack = Math.floor((this.brawn * (this.weapon.damage / 100)) * attackingLimbStrength) //May equip swords in both left or right hand
     var foeDefense = Math.ceil((foe.guard * Math.random()) * (foe.limbCondition[targetedLimb] / 100)) < 0 ? 0 : Math.ceil((foe.guard * Math.random()) * (foe.limbCondition[targetedLimb] / 100))
     var damage = (attack - foeDefense) < 0 ? 0 : (attack - foeDefense)
 
@@ -33,11 +39,16 @@ this.attack = function(foe, targetedLimb, combatColor) {
     var outcome = damage === 0 ? this.name + "'s attack glances off of " + foe.name + "'s armour" : this.name + " attacks " + foe.name + "'s " + targetedLimb + " for " + damage + " damage."
     console.log("%c" + outcome,"color:" + combatColor + ";")
     console.log("%c" + foe.name + "'s " + targetedLimb +" condition: " + foe.limbCondition[targetedLimb],"color:" + combatColor + ";")
+    if (foe.limbCondition[targetedLimb] <= 0) {
+      console.log(foe.name + "'s " + targetedLimb + " Has been destroyed")
+      delete foe.limbCondition[targetedLimb] // -------- DO Not Forget!!! Remove ability to attack this limb once removed
+    console.log(foe.limbCondition)
+    }
     console.log("%c" + foe.name + " has " + foe.condition + " health left","color:" + combatColor + ";")
     console.log("----------------------------")
     if (foe.condition <= 0) {
       console.log(foe.name + " has fallen in battle!")
-      return
+      return "STOP"
     }
    // console.log(foe.name + "'s arm has " + foe.limbCondition.rightArm + " health left")
 };
@@ -86,16 +97,17 @@ foeChooseLimb = function() {
 }
 
 combatRound = function(foe) {
+  console.log(document.getElementById("active"))
   if (document.getElementById("active") === null) {
 console.log("No limb selected")
 } else if (foe.condition > 0 && player.condition > 0) {
 
   var targetedLimb = document.getElementById("active").name
 
-    player.attack(foe, targetedLimb, "green");
+    //player.attack(foe, targetedLimb, "green");
 
-    if (foe.condition > 0 && player.condition > 0) {
-    skeleton1.attack(player, foeChooseLimb(), "red");
+    if (foe.condition > 0 && player.condition > 0 && player.attack(foe, targetedLimb, "green") != "STOP") {
+    skeleton1.attack(player, "foeChooseLimb()", "red");
     }
 
   } else if (foe. condition <= 0 ){
